@@ -12,8 +12,15 @@ service:
 
 postgresql:
   enabled: true
+  fullnameOverride: guacamole-postgresql
   auth:
     postgresPassword: guacroot
     username: guacamole
     password: guacpass
     database: guacamole_db
+
+env:
+  POSTGRES_HOSTNAME: guacamole-postgresql
+  POSTGRES_DATABASE: guacamole_db
+  POSTGRES_USER: guacamole
+  POSTGRES_PASSWORD: guacpass

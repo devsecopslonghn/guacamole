@@ -14,20 +14,20 @@ spec:
     spec:
       containers:
         - name: guacd
-          image: "{{ .Values.guacd.repository }}:{{ .Values.guacd.tag }}"
+          image: {{ .Values.guacd.repository }}:{{ .Values.guacd.tag }}
           ports:
             - containerPort: 4822
 
         - name: guacamole
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           ports:
             - containerPort: 8080
           env:
             - name: POSTGRES_HOSTNAME
-              value: "guacamole-postgresql"
+              value: {{ .Values.env.POSTGRES_HOSTNAME }}
             - name: POSTGRES_DATABASE
-              value: "{{ .Values.postgresql.auth.database }}"
+              value: {{ .Values.env.POSTGRES_DATABASE }}
             - name: POSTGRES_USER
-              value: "{{ .Values.postgresql.auth.username }}"
+              value: {{ .Values.env.POSTGRES_USER }}
             - name: POSTGRES_PASSWORD
-              value: "{{ .Values.postgresql.auth.password }}"
+              value: {{ .Values.env.POSTGRES_PASSWORD }}

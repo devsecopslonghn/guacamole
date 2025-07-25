@@ -11,10 +11,10 @@ spec:
           command:
             - sh
             - -c
-            - psql -h guacamole-postgresql -U {{ .Values.postgresql.auth.username }} -d {{ .Values.postgresql.auth.database }} -f /initdb/initdb.sql
+            - psql -h {{ .Values.env.POSTGRES_HOSTNAME }} -U {{ .Values.env.POSTGRES_USER }} -d {{ .Values.env.POSTGRES_DATABASE }} -f /initdb/initdb.sql
           env:
             - name: PGPASSWORD
-              value: "{{ .Values.postgresql.auth.password }}"
+              value: {{ .Values.env.POSTGRES_PASSWORD }}
           volumeMounts:
             - name: initdb-volume
               mountPath: /initdb
@@ -23,3 +23,4 @@ spec:
           configMap:
             name: guacamole-initdb
       restartPolicy: OnFailure
+  backoffLimit: 3
