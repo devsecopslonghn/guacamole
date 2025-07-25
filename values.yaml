@@ -1,0 +1,17 @@
+image:
+  repository: guacamole/guacamole
+  tag: latest
+  pullPolicy: IfNotPresent
+
+guacd:
+  repository: guacamole/guacd
+  tag: latest
+
+service:
+  type: ClusterIP
+  port: 8080
+
+persistence:
+  enabled: true
+  size: 1Gi
+  storageClass: standard
