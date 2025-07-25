@@ -1,7 +1,6 @@
 image:
   repository: guacamole/guacamole
   tag: latest
-  pullPolicy: IfNotPresent
 
 guacd:
   repository: guacamole/guacd
@@ -11,7 +10,10 @@ service:
   type: ClusterIP
   port: 8080
 
-persistence:
+postgresql:
   enabled: true
-  size: 1Gi
-  storageClass: standard
+  auth:
+    postgresPassword: guacroot
+    username: guacamole
+    password: guacpass
+    database: guacamole_db

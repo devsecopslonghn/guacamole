@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: guacamole-initdb
+spec:
+  template:
+    spec:
+      containers:
+        - name: initdb
+          image: bitnami/postgresql:15
+          command:
+            - sh
+            - -c
+            - psql -h guacamole-postgresql -U {{ .Values.postgresql.auth.username }} -d {{ .Values.postgresql.auth.database }} -f /initdb/initdb.sql
+          env:
+            - name: PGPASSWORD
+              value: "{{ .Values.postgresql.auth.password }}"
+          volumeMounts:
+            - name: initdb-volume
+              mountPath: /initdb
+      volumes:
+        - name: initdb-volume
+          configMap:
+            name: guacamole-initdb
+      restartPolicy: OnFailure
