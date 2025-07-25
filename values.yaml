@@ -19,6 +19,12 @@ postgresql:
     password: guacpass
     database: guacamole_db
 
+  primary:
+    persistence:
+      enabled: true
+      storageClass: longhorn
+      size: 2Gi
+
 env:
   POSTGRES_HOSTNAME: guacamole-postgresql
   POSTGRES_DATABASE: guacamole_db
