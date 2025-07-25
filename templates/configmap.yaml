@@ -4,8 +4,8 @@ metadata:
   name: guacamole-config
 data:
   guacamole.properties: |
-    postgresql-hostname: ${POSTGRES_HOSTNAME}
+    postgresql-hostname: guacamole-postgresql
     postgresql-port: 5432
-    postgresql-database: ${POSTGRES_DATABASE}
-    postgresql-username: ${POSTGRES_USER}
-    postgresql-password: ${POSTGRES_PASSWORD}
+    postgresql-database: guacamole_db
+    postgresql-username: guacamole_user
+    postgresql-password: guacamole_pass
