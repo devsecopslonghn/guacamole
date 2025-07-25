@@ -2,7 +2,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: guacamole-initdb
+  labels:
+    app: guacamole
 data:
-  initdb.sql: |
-    -- Your Guacamole SQL schema goes here
-    -- (Bạn có thể lấy từ: https://github.com/apache/guacamole-server/tree/master/src/schema/postgresql)
+  initdb.sql: |-
+{{ .Files.Get "files/initdb.sql" | indent 4 }}

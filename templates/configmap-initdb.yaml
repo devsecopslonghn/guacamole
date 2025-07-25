@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: guacamole-initdb
-  labels:
-    app: guacamole
-data:
-  initdb.sql: |-
-{{ .Files.Get "files/initdb.sql" | indent 4 }}
