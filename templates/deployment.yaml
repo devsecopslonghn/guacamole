@@ -14,16 +14,16 @@ spec:
     spec:
       containers:
         - name: guacd
-          image: {{ .Values.guacd.repository }}:{{ .Values.guacd.tag }}
+          image: {{ .Values.guacamole.guacd.repository }}:{{ .Values.guacamole.guacd.tag }}
           ports:
             - containerPort: 4822
 
         - name: guacamole
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          image: {{ .Values.guacamole.image.repository }}:{{ .Values.guacamole.image.tag }}
           ports:
             - containerPort: 8080
           env:
-            {{- range $key, $val := .Values.env }}
+            {{- range $key, $val := .Values.guacamole.env }}
             - name: {{ $key }}
               value: "{{ $val }}"
             {{- end }}

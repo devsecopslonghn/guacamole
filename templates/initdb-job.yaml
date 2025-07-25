@@ -11,10 +11,13 @@ spec:
           command:
             - sh
             - -c
-            - psql -h {{ .Values.env.POSTGRES_HOSTNAME }} -U {{ .Values.env.POSTGRES_USER }} -d {{ .Values.env.POSTGRES_DATABASE }} -f /initdb/initdb.sql
+            - psql -h {{ .Values.guacamole.env.POSTGRES_HOSTNAME }} \
+                  -U {{ .Values.guacamole.env.POSTGRES_USER }} \
+                  -d {{ .Values.guacamole.env.POSTGRES_DATABASE }} \
+                  -f /initdb/initdb.sql
           env:
             - name: PGPASSWORD
-              value: {{ .Values.env.POSTGRES_PASSWORD }}
+              value: {{ .Values.guacamole.env.POSTGRES_PASSWORD }}
           volumeMounts:
             - name: initdb-volume
               mountPath: /initdb

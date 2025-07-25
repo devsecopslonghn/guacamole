@@ -3,9 +3,9 @@ kind: Service
 metadata:
   name: guacamole
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.guacamole.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.guacamole.service.port }}
       targetPort: 8080
   selector:
     app: guacamole
