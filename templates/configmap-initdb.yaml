@@ -4,6 +4,6 @@ metadata:
   name: guacamole-initdb
   labels:
     app: guacamole
-binaryData:
+data:
   initdb.sql: |-
 {{ .Files.Get "files/initdb.sql" | indent 4 }}
