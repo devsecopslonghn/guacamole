@@ -1,17 +1,27 @@
-# Enable and configure internal PostgreSQL
+# PostgreSQL subchart configuration (Bitnami style >=15.x)
 postgresql:
   enabled: true
+
   auth:
     username: guacamole_user
     password: guacamole_pass
     database: guacamole_db
+
   fullnameOverride: guacamole-postgresql
+
+  primary:
+    podAnnotations:
+      "helm.sh/resource-policy": keep
+    persistence:
+      enabled: true
+      size: 8Gi
 
 # Guacamole application configuration
 guacamole:
   image:
     repository: guacamole/guacamole
     tag: latest
+
   guacd:
     repository: guacamole/guacd
     tag: latest
@@ -30,7 +40,7 @@ guacamole:
 ingress:
   enabled: false
 
-# Init job configuration (to init DB schema)
+# Init DB schema via Job
 initdb:
   enabled: true
   image:

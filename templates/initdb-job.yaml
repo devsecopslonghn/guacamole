@@ -2,6 +2,9 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: guacamole-initdb
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
 spec:
   template:
     spec:
@@ -11,10 +14,11 @@ spec:
           command:
             - sh
             - -c
-            - psql -h {{ .Values.guacamole.env.POSTGRES_HOSTNAME }} \
-                  -U {{ .Values.guacamole.env.POSTGRES_USER }} \
-                  -d {{ .Values.guacamole.env.POSTGRES_DATABASE }} \
-                  -f /initdb/initdb.sql
+            - >
+              psql -h {{ .Values.guacamole.env.POSTGRES_HOSTNAME }} \
+                   -U {{ .Values.guacamole.env.POSTGRES_USER }} \
+                   -d {{ .Values.guacamole.env.POSTGRES_DATABASE }} \
+                   -f /initdb/initdb.sql
           env:
             - name: PGPASSWORD
               value: {{ .Values.guacamole.env.POSTGRES_PASSWORD }}
