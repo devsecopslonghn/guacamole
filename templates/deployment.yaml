@@ -17,7 +17,6 @@ spec:
           image: {{ .Values.guacamole.guacd.repository }}:{{ .Values.guacamole.guacd.tag }}
           ports:
             - containerPort: 4822
-
         - name: guacamole
           image: {{ .Values.guacamole.image.repository }}:{{ .Values.guacamole.image.tag }}
           ports:
@@ -27,3 +26,11 @@ spec:
             - name: {{ $key }}
               value: "{{ $val }}"
             {{- end }}
+          volumeMounts:
+            - name: guacamole-config
+              mountPath: /etc/guacamole/guacamole.properties
+              subPath: guacamole.properties
+      volumes:
+        - name: guacamole-config
+          configMap:
+            name: guacamole-config

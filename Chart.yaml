@@ -1,9 +1,11 @@
 apiVersion: v2
 name: guacamole
-description: A Helm chart for Apache Guacamole with PostgreSQL
+description: A Helm chart for Apache Guacamole with embedded PostgreSQL
+type: application
 version: 0.1.0
 appVersion: "1.6.0"
+
 dependencies:
   - name: postgresql
-    version: 12.5.7
+    version: 15.5.5   # hoặc version mới hơn
     repository: https://charts.bitnami.com/bitnami

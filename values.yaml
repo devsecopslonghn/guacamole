@@ -1,14 +1,10 @@
-# PostgreSQL subchart configuration (Bitnami style >=15.x)
 postgresql:
   enabled: true
-
+  fullnameOverride: guacamole-postgresql
   auth:
     username: guacamole_user
     password: guacamole_pass
     database: guacamole_db
-
-  fullnameOverride: guacamole-postgresql
-
   primary:
     podAnnotations:
       "helm.sh/resource-policy": keep
@@ -16,31 +12,22 @@ postgresql:
       enabled: true
       size: 8Gi
 
-# Guacamole application configuration
 guacamole:
   image:
     repository: guacamole/guacamole
     tag: latest
-
   guacd:
     repository: guacamole/guacd
     tag: latest
-
   env:
     POSTGRES_HOSTNAME: guacamole-postgresql
     POSTGRES_DATABASE: guacamole_db
     POSTGRES_USER: guacamole_user
     POSTGRES_PASSWORD: guacamole_pass
-
   service:
     type: ClusterIP
     port: 8080
 
-# Optional ingress
-ingress:
-  enabled: false
-
-# Init DB schema via Job
 initdb:
   enabled: true
   image:

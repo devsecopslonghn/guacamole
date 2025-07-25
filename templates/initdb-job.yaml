@@ -10,18 +10,18 @@ spec:
     spec:
       containers:
         - name: initdb
-          image: bitnami/postgresql:15
+          image: {{ .Values.initdb.image.repository }}:{{ .Values.initdb.image.tag }}
           command:
             - sh
             - -c
             - >
-              psql -h {{ .Values.guacamole.env.POSTGRES_HOSTNAME }} \
-                   -U {{ .Values.guacamole.env.POSTGRES_USER }} \
-                   -d {{ .Values.guacamole.env.POSTGRES_DATABASE }} \
+              psql -h {{ .Values.initdb.env.POSTGRES_HOSTNAME }} \
+                   -U {{ .Values.initdb.env.POSTGRES_USER }} \
+                   -d {{ .Values.initdb.env.POSTGRES_DATABASE }} \
                    -f /initdb/initdb.sql
           env:
             - name: PGPASSWORD
-              value: {{ .Values.guacamole.env.POSTGRES_PASSWORD }}
+              value: {{ .Values.initdb.env.POSTGRES_PASSWORD }}
           volumeMounts:
             - name: initdb-volume
               mountPath: /initdb
