@@ -9,3 +9,4 @@ data:
     postgresql-database: guacamole_db
     postgresql-username: guacamole_user
     postgresql-password: guacamole_pass
+    disable-authorization-notification: true
