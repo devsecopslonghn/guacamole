@@ -23,6 +23,20 @@ spec:
             - >
               until nc -z {{ .Values.guacamole.env.POSTGRES_HOSTNAME }} 5432;
               do echo "Waiting for PostgreSQL..."; sleep 2; done
+
+        - name: fetch-openid-plugin
+          image: busybox
+          command: ["sh", "-c"]
+          args:
+            - >
+              mkdir -p /extensions &&
+              wget https://downloads.apache.org/guacamole/1.6.0/binary/guacamole-auth-sso-1.6.0.tar.gz -O /tmp/plugin.tar.gz &&
+              tar -xzf /tmp/plugin.tar.gz -C /tmp &&
+              cp /tmp/openid/guacamole-auth-sso-openid-1.6.0.jar /extensions/
+          volumeMounts:
+            - name: guac-extensions
+              mountPath: /extensions
+
       containers:
         - name: guacd
           image: {{ .Values.guacamole.guacd.repository }}:{{ .Values.guacamole.guacd.tag }}
@@ -42,7 +56,12 @@ spec:
             - name: guacamole-config
               mountPath: /etc/guacamole/guacamole.properties
               subPath: guacamole.properties
+            - name: guac-extensions
+              mountPath: /etc/guacamole/extensions
+
       volumes:
         - name: guacamole-config
           configMap:
             name: guacamole-config
+        - name: guac-extensions
+          emptyDir: {}
