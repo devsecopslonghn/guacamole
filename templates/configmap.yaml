@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: guacamole-config
 data:
-  guacamole.properties.template: |
+  guacamole.properties: |
     postgresql-hostname: {{ .Values.guacamole.env.POSTGRES_HOSTNAME }}
     postgresql-port: 5432
     postgresql-database: {{ .Values.guacamole.env.POSTGRES_DATABASE }}
@@ -11,12 +11,12 @@ data:
     postgresql-password: {{ .Values.guacamole.env.POSTGRES_PASSWORD }}
     disable-authorization-notification: true
     disable-user-password-authentication: true
-    openid-authorization-endpoint: ${OPENID_AUTHORIZATION_ENDPOINT}
-    openid-token-endpoint: ${OPENID_TOKEN_ENDPOINT}
-    openid-jwks-endpoint: ${OPENID_JWKS_ENDPOINT}
-    openid-issuer: ${OPENID_ISSUER}
-    openid-client-id: ${OPENID_CLIENT_ID}
-    openid-client-secret: ${OPENID_CLIENT_SECRET}
-    openid-redirect-uri: ${OPENID_REDIRECT_URI}
-    openid-username-claim-type: preferred_username
-    openid-groups-claim-type: groups
+    openid-authorization-endpoint: {{ include "guacamole.envValue" (dict "name" "OPENID_AUTHORIZATION_ENDPOINT" "ctx" .) }}
+    openid-token-endpoint:        {{ include "guacamole.envValue" (dict "name" "OPENID_TOKEN_ENDPOINT" "ctx" .) }}
+    openid-jwks-endpoint:         {{ include "guacamole.envValue" (dict "name" "OPENID_JWKS_ENDPOINT" "ctx" .) }}
+    openid-issuer:                {{ include "guacamole.envValue" (dict "name" "OPENID_ISSUER" "ctx" .) }}
+    openid-redirect-uri:          {{ include "guacamole.envValue" (dict "name" "OPENID_REDIRECT_URI" "ctx" .) }}
+    openid-client-id:             ${OPENID_CLIENT_ID}
+    openid-client-secret:         ${OPENID_CLIENT_SECRET}
+    openid-username-claim-type:   preferred_username
+    openid-groups-claim-type:     groups
