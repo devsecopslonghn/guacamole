@@ -45,7 +45,7 @@ guacamole:
     - name: OPENID_ISSUER
       value: https://token.actions.githubusercontent.com
     - name: OPENID_REDIRECT_URI
-      value: https://guacamole.longhntraing.site/guacamole/api/ext/openid/callback
+      value: https://guacamole.longhntraing.site/guacamole
 
   extraVolumes:
     - name: config-template
