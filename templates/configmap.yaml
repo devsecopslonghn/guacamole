@@ -4,11 +4,11 @@ metadata:
   name: guacamole-config
 data:
   guacamole.properties: |
-    postgresql-hostname: ${POSTGRES_HOSTNAME}
+    postgresql-hostname: {{ .Values.guacamole.env.POSTGRES_HOSTNAME }}
     postgresql-port: 5432
-    postgresql-database: ${POSTGRES_DATABASE}
-    postgresql-username: ${POSTGRES_USER}
-    postgresql-password: ${POSTGRES_PASSWORD}
+    postgresql-database: {{ .Values.guacamole.env.POSTGRES_DATABASE }}
+    postgresql-username: {{ .Values.guacamole.env.POSTGRES_USER }}
+    postgresql-password: {{ .Values.guacamole.env.POSTGRES_PASSWORD }}
     disable-authorization-notification: true
     disable-user-password-authentication: true
     openid-authorization-endpoint: ${OPENID_AUTHORIZATION_ENDPOINT}
