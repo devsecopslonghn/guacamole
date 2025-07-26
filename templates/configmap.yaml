@@ -4,7 +4,7 @@ metadata:
   name: guacamole-config
 data:
   guacamole.properties: |
-    extension-priority: openid, postgresql, ban
+    extension-priority: postgresql, openid, ban
     postgresql-hostname: {{ .Values.guacamole.env.POSTGRES_HOSTNAME }}
     postgresql-port: 5432
     postgresql-database: {{ .Values.guacamole.env.POSTGRES_DATABASE }}
