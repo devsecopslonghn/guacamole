@@ -19,27 +19,22 @@ guacamole:
   guacd:
     repository: guacamole/guacd
     tag: latest
+
   env:
     POSTGRES_HOSTNAME: guacamole-postgresql
     POSTGRES_DATABASE: guacamole_db
     POSTGRES_USER: guacamole_user
     POSTGRES_PASSWORD: guacamole_pass
+
   service:
     type: ClusterIP
     port: 8080
 
-  # Inject OpenID env (static + from secret)
   extraEnv:
-    - name: OPENID_CLIENT_ID
-      valueFrom:
-        secretKeyRef:
-          name: guac-openid-secret
-          key: openid-client-id
-    - name: OPENID_CLIENT_SECRET
-      valueFrom:
-        secretKeyRef:
-          name: guac-openid-secret
-          key: openid-client-secret
+    - name: OPENID_CLIENT_ID_FILE
+      value: /secrets/openid-client-id
+    - name: OPENID_CLIENT_SECRET_FILE
+      value: /secrets/openid-client-secret
     - name: OPENID_AUTHORIZATION_ENDPOINT
       value: https://github.com/login/oauth/authorize
     - name: OPENID_TOKEN_ENDPOINT
@@ -52,20 +47,14 @@ guacamole:
       value: https://guacamole.longhntraing.site/guacamole/api/ext/openid/callback
 
   extraVolumes:
-    - name: guac-extensions
-      emptyDir: {}
-    - name: config-template
-      configMap:
-        name: guacamole-config
-    - name: config-output
-      emptyDir: {}
+    - name: guac-secret
+      secret:
+        secretName: guac-openid-secret
 
   extraVolumeMounts:
-    - name: guac-extensions
-      mountPath: /etc/guacamole/extensions
-    - name: config-output
-      mountPath: /etc/guacamole/guacamole.properties
-      subPath: guacamole.properties
+    - name: guac-secret
+      mountPath: /secrets
+      readOnly: true
 
 initdb:
   enabled: true

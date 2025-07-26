@@ -4,8 +4,6 @@ metadata:
   name: guacamole
   labels:
     app: guacamole
-  annotations:
-    checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
 spec:
   replicas: 1
   selector:
@@ -25,18 +23,6 @@ spec:
             - >
               until nc -z {{ .Values.guacamole.env.POSTGRES_HOSTNAME }} 5432;
               do echo "Waiting for PostgreSQL..."; sleep 2; done
-        - name: fetch-openid-plugin
-          image: busybox
-          command: ["sh", "-c"]
-          args:
-            - >
-              mkdir -p /etc/guacamole/extensions &&
-              wget https://downloads.apache.org/guacamole/1.6.0/binary/guacamole-auth-sso-1.6.0.tar.gz -O /tmp/plugin.tar.gz &&
-              tar -xzf /tmp/plugin.tar.gz -C /tmp &&
-              cp /tmp/guacamole-auth-sso-1.6.0/openid/guacamole-auth-sso-openid-1.6.0.jar /etc/guacamole/extensions/
-          volumeMounts:
-            - name: guac-extensions
-              mountPath: /etc/guacamole/extensions
 
       containers:
         - name: guacd
@@ -56,18 +42,12 @@ spec:
             {{- with .Values.guacamole.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
+          {{- with .Values.guacamole.extraVolumeMounts }}
           volumeMounts:
-            - name: guacamole-config
-              mountPath: /etc/guacamole/guacamole.properties
-              subPath: guacamole.properties
-            {{- with .Values.guacamole.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
-            {{- end }}
+          {{- end }}
 
+      {{- with .Values.guacamole.extraVolumes }}
       volumes:
-        - name: guacamole-config
-          configMap:
-            name: guacamole-config
-        {{- with .Values.guacamole.extraVolumes }}
         {{- toYaml . | nindent 8 }}
-        {{- end }}
+      {{- end }}
