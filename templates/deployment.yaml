@@ -32,7 +32,7 @@ spec:
               mkdir -p /extensions &&
               wget https://downloads.apache.org/guacamole/1.6.0/binary/guacamole-auth-sso-1.6.0.tar.gz -O /tmp/plugin.tar.gz &&
               tar -xzf /tmp/plugin.tar.gz -C /tmp &&
-              cp /tmp/openid/guacamole-auth-sso-openid-1.6.0.jar /extensions/
+              cp /tmp/guacamole-auth-sso-1.6.0/openid/guacamole-auth-sso-openid-1.6.0.jar /extensions/
           volumeMounts:
             - name: guac-extensions
               mountPath: /extensions
