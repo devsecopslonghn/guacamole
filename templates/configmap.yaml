@@ -16,7 +16,5 @@ data:
     openid-jwks-endpoint:         {{ include "guacamole.envValue" (dict "name" "OPENID_JWKS_ENDPOINT" "ctx" .) }}
     openid-issuer:                {{ include "guacamole.envValue" (dict "name" "OPENID_ISSUER" "ctx" .) }}
     openid-redirect-uri:          {{ include "guacamole.envValue" (dict "name" "OPENID_REDIRECT_URI" "ctx" .) }}
-    openid-client-id:             ${OPENID_CLIENT_ID}
-    openid-client-secret:         ${OPENID_CLIENT_SECRET}
     openid-username-claim-type:   preferred_username
     openid-groups-claim-type:     groups

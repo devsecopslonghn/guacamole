@@ -19,17 +19,16 @@ guacamole:
   guacd:
     repository: guacamole/guacd
     tag: latest
-
   env:
     POSTGRES_HOSTNAME: guacamole-postgresql
     POSTGRES_DATABASE: guacamole_db
     POSTGRES_USER: guacamole_user
     POSTGRES_PASSWORD: guacamole_pass
-
   service:
     type: ClusterIP
     port: 8080
 
+  # Inject OpenID env (static + from secret)
   extraEnv:
     - name: OPENID_CLIENT_ID_FILE
       value: /secrets/openid-client-id
@@ -47,14 +46,16 @@ guacamole:
       value: https://guacamole.longhntraing.site/guacamole/api/ext/openid/callback
 
   extraVolumes:
-    - name: guac-secret
-      secret:
-        secretName: guac-openid-secret
+    - name: config-template
+      configMap:
+        name: guacamole-config
+    - name: config-output
+      emptyDir: {}
 
   extraVolumeMounts:
-    - name: guac-secret
-      mountPath: /secrets
-      readOnly: true
+    - name: config-output
+      mountPath: /etc/guacamole/guacamole.properties
+      subPath: guacamole.properties
 
 initdb:
   enabled: true

@@ -4,6 +4,8 @@ metadata:
   name: guacamole
   labels:
     app: guacamole
+  annotations:
+    checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
 spec:
   replicas: 1
   selector:
@@ -23,7 +25,6 @@ spec:
             - >
               until nc -z {{ .Values.guacamole.env.POSTGRES_HOSTNAME }} 5432;
               do echo "Waiting for PostgreSQL..."; sleep 2; done
-
       containers:
         - name: guacd
           image: {{ .Values.guacamole.guacd.repository }}:{{ .Values.guacamole.guacd.tag }}
@@ -42,12 +43,18 @@ spec:
             {{- with .Values.guacamole.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-          {{- with .Values.guacamole.extraVolumeMounts }}
           volumeMounts:
+            - name: guacamole-config
+              mountPath: /etc/guacamole/guacamole.properties
+              subPath: guacamole.properties
+            {{- with .Values.guacamole.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
-          {{- end }}
+            {{- end }}
 
-      {{- with .Values.guacamole.extraVolumes }}
       volumes:
+        - name: guacamole-config
+          configMap:
+            name: guacamole-config
+        {{- with .Values.guacamole.extraVolumes }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
