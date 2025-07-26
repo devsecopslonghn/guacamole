@@ -1,6 +1,3 @@
-# =====================
-# PostgreSQL nội bộ
-# =====================
 postgresql:
   enabled: true
   fullnameOverride: guacamole-postgresql
@@ -15,9 +12,6 @@ postgresql:
       enabled: true
       size: 8Gi
 
-# =====================
-# Guacamole core
-# =====================
 guacamole:
   image:
     repository: guacamole/guacamole
@@ -34,9 +28,37 @@ guacamole:
     type: ClusterIP
     port: 8080
 
-# =====================
-# Init DB lần đầu
-# =====================
+  # Inject OpenID env (static + from secret)
+  extraEnv:
+    - name: OPENID_CLIENT_ID
+      valueFrom:
+        secretKeyRef:
+          name: guac-openid-secret
+          key: openid-client-id
+    - name: OPENID_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: guac-openid-secret
+          key: openid-client-secret
+    - name: OPENID_AUTHORIZATION_ENDPOINT
+      value: https://github.com/login/oauth/authorize
+    - name: OPENID_TOKEN_ENDPOINT
+      value: https://github.com/login/oauth/access_token
+    - name: OPENID_JWKS_ENDPOINT
+      value: https://token.actions.githubusercontent.com/.well-known/jwks
+    - name: OPENID_ISSUER
+      value: https://token.actions.githubusercontent.com
+    - name: OPENID_REDIRECT_URI
+      value: https://guacamole.longhntraing.site/guacamole/api/ext/openid/callback
+
+  extraVolumes:
+    - name: guac-extensions
+      emptyDir: {}
+
+  extraVolumeMounts:
+    - name: guac-extensions
+      mountPath: /etc/guacamole/extensions
+
 initdb:
   enabled: true
   image:
@@ -48,69 +70,14 @@ initdb:
     POSTGRES_USER: guacamole_user
     POSTGRES_PASSWORD: guacamole_pass
 
-# =====================
-# Mount plugin .jar OpenID qua initContainer
-# =====================
-extraVolumes:
-  - name: guac-extensions
-    emptyDir: {}
-
-extraVolumeMounts:
-  - name: guac-extensions
-    mountPath: /etc/guacamole/extensions
-
-extraInitContainers:
-  - name: fetch-openid-plugin
-    image: busybox
-    command: [sh, -c]
-    args:
-      - >
-        wget https://downloads.apache.org/guacamole/1.6.0/binary/guacamole-auth-sso-1.6.0.tar.gz -O /tmp/plugin.tar.gz &&
-        tar -xzf /tmp/plugin.tar.gz -C /tmp &&
-        cp /tmp/openid/guacamole-auth-sso-openid-1.6.0.jar /extensions/
-    volumeMounts:
-      - name: guac-extensions
-        mountPath: /extensions
-
-# =====================
-# ENV từ secret external-secrets
-# =====================
-extraEnv:
-  - name: OPENID_CLIENT_ID
-    valueFrom:
-      secretKeyRef:
-        name: guac-openid-secret
-        key: openid-client-id
-  - name: OPENID_CLIENT_SECRET
-    valueFrom:
-      secretKeyRef:
-        name: guac-openid-secret
-        key: openid-client-secret
-
-# =====================
-# Cấu hình OpenID (GitHub)
-# =====================
-guacamoleProperties:
-  openid-authorization-endpoint: https://github.com/login/oauth/authorize
-  openid-token-endpoint: https://github.com/login/oauth/access_token
-  openid-jwks-endpoint: https://token.actions.githubusercontent.com/.well-known/jwks
-  openid-issuer: https://token.actions.githubusercontent.com
-  openid-redirect-uri: https://guacamole.longhntraing.site/guacamole/api/ext/openid/callback
-
-# =====================
-# External Secrets integration (generate SecretStore + ExternalSecret từ Helm chart)
-# =====================
 externalSecrets:
   enabled: true
-
   name: guac-openid-secret
   targetSecret: guac-openid-secret
-
   secretStore:
     name: aws-ssm-store
     region: ap-southeast-1
     credentialsSecret: aws-ssm-creds
-
   parameters:
     clientID: /guacamole/openid-client-id
     clientSecret: /guacamole/openid-client-secret
