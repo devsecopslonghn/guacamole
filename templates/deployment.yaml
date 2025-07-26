@@ -24,15 +24,15 @@ spec:
               until nc -z {{ .Values.guacamole.env.POSTGRES_HOSTNAME }} 5432;
               do echo "Waiting for PostgreSQL..."; sleep 2; done
         - name: fetch-openid-plugin
-          image: busybox:1.36
+          image: alpine:3.20
           command:
             - sh
             - -c
             - >
-              wget https://downloads.apache.org/guacamole/1.5.4/binary/guacamole-auth-openid-1.5.4.tar.gz && \
+              wget https://downloads.apache.org/guacamole/1.6.0/binary/guacamole-auth-openid-1.6.0.tar.gz -o /tmp/plugin.tar.gz && \
               mkdir -p /guac-extensions && \
-              tar -xzf guacamole-auth-openid-1.5.4.tar.gz -C /guac-extensions && \
-              mv /guac-extensions/guacamole-auth-openid-1.5.4/*.jar /guac-extensions/
+              tar -xzf /tmp/plugin.tar.gz -C /guac-extensions && \
+              mv /guac-extensions/guacamole-auth-openid-1.6.0/*.jar /guac-extensions/
           volumeMounts:
             - name: guac-extensions
               mountPath: /guac-extensions
