@@ -54,10 +54,18 @@ guacamole:
   extraVolumes:
     - name: guac-extensions
       emptyDir: {}
+    - name: config-template
+      configMap:
+        name: guacamole-config
+    - name: config-output
+      emptyDir: {}
 
   extraVolumeMounts:
     - name: guac-extensions
       mountPath: /etc/guacamole/extensions
+    - name: config-output
+      mountPath: /etc/guacamole/guacamole.properties
+      subPath: guacamole.properties
 
 initdb:
   enabled: true
