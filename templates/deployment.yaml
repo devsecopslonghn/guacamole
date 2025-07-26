@@ -4,6 +4,8 @@ metadata:
   name: guacamole
   labels:
     app: guacamole
+  annotations:
+    checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
 spec:
   replicas: 1
   selector:
