@@ -51,11 +51,17 @@ guacamole:
         name: guacamole-config
     - name: config-output
       emptyDir: {}
+    - name: guac-secret
+      secret:
+        secretName: guac-openid-secret
 
   extraVolumeMounts:
     - name: config-output
       mountPath: /etc/guacamole/guacamole.properties
       subPath: guacamole.properties
+    - name: guac-secret
+      mountPath: /secrets
+      readOnly: true
 
 initdb:
   enabled: true
