@@ -28,11 +28,19 @@ spec:
           command:
             - sh
             - -c
-            - >
-              wget https://downloads.apache.org/guacamole/1.6.0/binary/guacamole-auth-openid-1.6.0.tar.gz -o /tmp/plugin.tar.gz && \
-              mkdir -p /guac-extensions && \
-              tar -xzf /tmp/plugin.tar.gz -C /guac-extensions && \
+            - |
+              set -eux
+              echo "[INFO] Installing curl + tar"
+              apk add --no-cache curl tar
+              echo "[INFO] Downloading plugin..."
+              curl -fL https://downloads.apache.org/guacamole/1.6.0/binary/guacamole-auth-openid-1.6.0.tar.gz -o /tmp/plugin.tar.gz
+              echo "[INFO] Creating extension directory"
+              mkdir -p /guac-extensions
+              echo "[INFO] Extracting plugin archive"
+              tar -xzf /tmp/plugin.tar.gz -C /guac-extensions
+              echo "[INFO] Moving .jar files"
               mv /guac-extensions/guacamole-auth-openid-1.6.0/*.jar /guac-extensions/
+              echo "[INFO] ✅ DONE"
           volumeMounts:
             - name: guac-extensions
               mountPath: /guac-extensions
