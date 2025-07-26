@@ -4,19 +4,19 @@ metadata:
   name: guacamole-config
 data:
   guacamole.properties: |
-    postgresql-hostname: {{ .Values.guacamole.env.POSTGRES_HOSTNAME }}
+    postgresql-hostname: ${POSTGRES_HOSTNAME}
     postgresql-port: 5432
-    postgresql-database: {{ .Values.guacamole.env.POSTGRES_DATABASE }}
-    postgresql-username: {{ .Values.guacamole.env.POSTGRES_USER }}
-    postgresql-password: {{ .Values.guacamole.env.POSTGRES_PASSWORD }}
+    postgresql-database: ${POSTGRES_DATABASE}
+    postgresql-username: ${POSTGRES_USER}
+    postgresql-password: ${POSTGRES_PASSWORD}
     disable-authorization-notification: true
     disable-user-password-authentication: true
-    openid-authorization-endpoint: {{ .Values.guacamole.env.OPENID_AUTHORIZATION_ENDPOINT }}
-    openid-token-endpoint: {{ .Values.guacamole.env.OPENID_TOKEN_ENDPOINT }}
-    openid-jwks-endpoint: {{ .Values.guacamole.env.OPENID_JWKS_ENDPOINT }}
-    openid-issuer: {{ .Values.guacamole.env.OPENID_ISSUER }}
-    openid-client-id: {{ .Values.guacamole.env.OPENID_CLIENT_ID }}
-    openid-client-secret: {{ .Values.guacamole.env.OPENID_CLIENT_SECRET }}
-    openid-redirect-uri: {{ .Values.guacamole.env.OPENID_REDIRECT_URI }}
+    openid-authorization-endpoint: ${OPENID_AUTHORIZATION_ENDPOINT}
+    openid-token-endpoint: ${OPENID_TOKEN_ENDPOINT}
+    openid-jwks-endpoint: ${OPENID_JWKS_ENDPOINT}
+    openid-issuer: ${OPENID_ISSUER}
+    openid-client-id: ${OPENID_CLIENT_ID}
+    openid-client-secret: ${OPENID_CLIENT_SECRET}
+    openid-redirect-uri: ${OPENID_REDIRECT_URI}
     openid-username-claim-type: preferred_username
     openid-groups-claim-type: groups
