@@ -30,8 +30,6 @@ guacamole:
 
   # Inject OpenID env (static + from secret)
   extraEnv:
-    - name: DISABLE_USER_PASSWORD_AUTHENTICATION
-      value: "true"
     - name: OPENID_CLIENT_ID
       valueFrom:
         secretKeyRef:
