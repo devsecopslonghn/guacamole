@@ -37,13 +37,13 @@ guacamole:
     - name: OPENID_CLIENT_SECRET_FILE
       value: /secrets/openid-client-secret
     - name: OPENID_AUTHORIZATION_ENDPOINT
-      value: https://github.com/login/oauth/authorize
+      value: https://keycloak.longhndevops.site/realms/develop/protocol/openid-connect/auth
     - name: OPENID_TOKEN_ENDPOINT
-      value: https://github.com/login/oauth/access_token
+      value: https://keycloak.longhndevops.site/realms/develop/protocol/openid-connect/token
     - name: OPENID_JWKS_ENDPOINT
-      value: https://token.actions.githubusercontent.com/.well-known/jwks
+      value: https://keycloak.longhndevops.site/realms/develop/protocol/openid-connect/certs
     - name: OPENID_ISSUER
-      value: https://token.actions.githubusercontent.com
+      value: https://keycloak.longhndevops.site/realms/develop
     - name: OPENID_REDIRECT_URI
       value: https://guacamole.longhntraing.site/guacamole
 
