@@ -54,10 +54,33 @@ guacamole:
   extraVolumes:
     - name: guac-extensions
       emptyDir: {}
+    - name: config-template
+      configMap:
+        name: guacamole-config
+    - name: config-output
+      emptyDir: {}
 
   extraVolumeMounts:
     - name: guac-extensions
       mountPath: /etc/guacamole/extensions
+    - name: config-output
+      mountPath: /etc/guacamole/guacamole.properties
+      subPath: guacamole.properties
+
+  extraInitContainers:
+    - name: render-guacamole-config
+      image: busybox
+      command:
+        - sh
+        - -c
+        - envsubst < /config/guacamole.properties.template > /output/guacamole.properties
+      env:
+        {{- toYaml .Values.guacamole.extraEnv | nindent 8 }}
+      volumeMounts:
+        - name: config-template
+          mountPath: /config
+        - name: config-output
+          mountPath: /output
 
 initdb:
   enabled: true
