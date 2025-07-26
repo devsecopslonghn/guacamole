@@ -9,6 +9,7 @@ data:
     postgresql-database: {{ .Values.guacamole.env.POSTGRES_DATABASE }}
     postgresql-username: {{ .Values.guacamole.env.POSTGRES_USER }}
     postgresql-password: {{ .Values.guacamole.env.POSTGRES_PASSWORD }}
+    auth-provider: net.sourceforge.guacamole.net.auth.openid.OpenIDAuthenticationProvider
     disable-authorization-notification: true
     disable-user-password-authentication: true
     openid-authorization-endpoint: {{ include "guacamole.envValue" (dict "name" "OPENID_AUTHORIZATION_ENDPOINT" "ctx" .) }}
