@@ -74,8 +74,7 @@ guacamole:
         - sh
         - -c
         - envsubst < /config/guacamole.properties.template > /output/guacamole.properties
-      env:
-        {{- toYaml .Values.guacamole.extraEnv | nindent 8 }}
+      env: []
       volumeMounts:
         - name: config-template
           mountPath: /config

@@ -37,6 +37,9 @@ spec:
           volumeMounts:
             - name: guac-extensions
               mountPath: /etc/guacamole/extensions
+        {{- with .Values.guacamole.extraInitContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
 
       containers:
         - name: guacd
