@@ -24,26 +24,17 @@ spec:
               until nc -z {{ .Values.guacamole.env.POSTGRES_HOSTNAME }} 5432;
               do echo "Waiting for PostgreSQL..."; sleep 2; done
         - name: fetch-openid-plugin
-          image: alpine:3.20
-          command:
-            - sh
-            - -c
-            - |
-              set -eux
-              echo "[INFO] Installing curl + tar"
-              apk add --no-cache curl tar
-              echo "[INFO] Downloading plugin..."
-              curl -fL https://downloads.apache.org/guacamole/1.6.0/binary/guacamole-auth-openid-1.6.0.tar.gz -o /tmp/plugin.tar.gz
-              echo "[INFO] Creating extension directory"
-              mkdir -p /guac-extensions
-              echo "[INFO] Extracting plugin archive"
-              tar -xzf /tmp/plugin.tar.gz -C /guac-extensions
-              echo "[INFO] Moving .jar files"
-              mv /guac-extensions/guacamole-auth-openid-1.6.0/*.jar /guac-extensions/
-              echo "[INFO] ✅ DONE"
+          image: busybox
+          command: ["sh", "-c"]
+          args:
+            - >
+              mkdir -p /etc/guacamole/extensions &&
+              wget https://downloads.apache.org/guacamole/1.6.0/binary/guacamole-auth-sso-1.6.0.tar.gz -O /tmp/plugin.tar.gz &&
+              tar -xzf /tmp/plugin.tar.gz -C /tmp &&
+              cp /tmp/openid/guacamole-auth-sso-openid-1.6.0.jar /etc/guacamole/extensions/
           volumeMounts:
             - name: guac-extensions
-              mountPath: /guac-extensions
+              mountPath: /etc/guacamole/extensions
 
       containers:
         - name: guacd
