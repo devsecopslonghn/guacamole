@@ -32,6 +32,8 @@ guacamole:
   extraEnv:
     - name: OPENID_ENABLED
       value: "true"
+    - name: OPENID_AUTO_CREATE_USERS
+      value: "true"
     - name: OPENID_CLIENT_ID_FILE
       value: /secrets/openid-client-id
     - name: OPENID_CLIENT_SECRET_FILE
