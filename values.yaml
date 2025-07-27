@@ -35,9 +35,7 @@ guacamole:
     - name: POSTGRESQL_AUTO_CREATE_ACCOUNTS
       value: "true"
     - name: OPENID_GROUP_MAPPING
-      value: |
-        //guac-admins:ADMIN
-        //guac-users:READ
+      value: "//guac-admins:ADMIN,//guac-users:READ"
     - name: OPENID_CLIENT_ID_FILE
       value: /secrets/openid-client-id
     - name: OPENID_CLIENT_SECRET_FILE
