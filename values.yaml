@@ -32,7 +32,7 @@ guacamole:
   extraEnv:
     - name: OPENID_ENABLED
       value: "true"
-    - name: OPENID_AUTO_CREATE_USERS
+    - name: POSTGRESQL_AUTO_CREATE_ACCOUNTS
       value: "true"
     - name: OPENID_CLIENT_ID_FILE
       value: /secrets/openid-client-id
